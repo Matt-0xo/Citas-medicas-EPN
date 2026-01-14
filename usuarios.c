@@ -99,7 +99,8 @@ void registrarUsuario(void) {
 		printf("Paciente (1)\n");
 		printf("Medico (2)\n");
 		printf("Elija una opcion: ");
-		
+
+		//En caso de ingresarse letras
 		if (scanf("%d", &opcionRol) != 1) {
 			printf("Dato invalido. Ingresar solo 1 o 2\n");
 			while (getchar() != '\n');
@@ -116,6 +117,8 @@ void registrarUsuario(void) {
 			strcpy(u.rol, "MEDICO");
 			rolValido = 1;
 		}
+		
+		//En caso de ingresarse un numero no admitido
 		else {
 			printf("Opcion invalida. Seleccione solo 1 o 2.\n");
 		}
