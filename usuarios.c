@@ -62,7 +62,6 @@ int login(Usuario *u) {
 	}
 	
 	fclose(f);
-	printf("Usuario o clave incorrectos.\n");
 	return 0;
 }
 
