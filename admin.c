@@ -2,44 +2,56 @@
 #include "pacientes.h"
 #include "medicos.h"
 #include "citas.h"
+#include "interfaz.h"
 #include <stdio.h>
 
-void menuAdmin(void) {
-	int opcion;
-	
+void menuAdminGeneral(void) {
+	int op;
+	// Usamos un bucle para que el menu se repita hasta que el admin decida salir
 	do {
-		printf("\n -_-_-Administracion del Hopital (Acceso completo)-_-_- \n");
-		printf("1. Gestionar pacientes\n");
-		printf("2. Gestionar medicos\n");
-		printf("3. Gestionar citas\n");
-		printf("4. Salir\n");
-		printf("Seleccione una opcion: ");
+		imprimirEncabezado("PANEL ADMINISTRADOR");
+		printf("    Acceso completo - Gestion Total\n");
+		printf("   --------------------------------\n");
+		printf("    [1] Gestionar Pacientes (Registrar / Listar / Eliminar)\n");
+		printf("    [2] Gestionar Medicos (Registrar / Listar / Eliminar)\n");
+		printf("    [3] Gestionar Citas (Ver Todas / Cancelar / Reagendar)\n");
+		printf("    [4] Cerrar Sesion\n");
+		imprimirLinea();
+		printf("   >> Seleccione una opcion: ");
 		
-		while (scanf("%d", &opcion) != 1) {
-			while (getchar() != '\n');
-			printf("Entrada invalida. Ingrese un numero: ");
+		// --- PROTECCION DE ERRORES ---
+		// Si el usuario escribe letras en lugar de numeros, el programa normalmente fallaria.
+		// Con esto, detectamos el error, limpiamos el teclado y le avisamos.
+		if (scanf("%d", &op) != 1) { 
+			while(getchar() != '\n'); // Borramos las letras que quedaron en la memoria
+			printf("\n    [ERROR] Opcion invalida. Ingrese solo numeros.\n");
+			pausa(); 
+			op = -1; // Forzamos un valor invalido para que el menu se repita
+			continue; 
 		}
 		
-		switch (opcion) {
-		case 1:
-			menuPacientes();
+		// Este switch funciona como un semaforo: dirige al admin a la seccion correcta
+		switch(op) {
+		case 1: 
+			// Llama al menu de pacientes (que ya arreglamos para permitir registrar/eliminar)
+			menuPacientes(); 
 			break;
-			
-		case 2:
-			menuMedicos();
+		case 2: 
+			// Llama al menu de medicos (donde puede modificar horarios)
+			menuMedicos(); 
+			break; 
+		case 3: 
+			// Llama al menu especial de citas para administradores
+			menuAdminCitas(); 
 			break;
-			
-		case 3:
-			menuAdminCitas();
+		case 4: 
+			printf("\n    Cerrando sesion de administrador...\n"); 
 			break;
-			
-		case 4:
-			printf("Saliendo del menu administrador...\n");
+		default: 
+			// Si pone un numero que no es 1, 2, 3 o 4
+			printf("\n    [ERROR] Opcion desconocida.\n");
+			pausa();
 			break;
-			
-		default:
-			printf("Opcion invalida.\n");
 		}
-		
-	} while (opcion != 4);
+	} while(op != 4);
 }
